@@ -137,7 +137,7 @@ const Mutation = new GraphQLObjectType({
         const request = {
           name: args.name,
           description: args.description,
-          date: args.data,
+          date: args.date,
           price: args.price,
           image: args.image,
           artistIds: args.artistIds,
@@ -180,7 +180,7 @@ const Mutation = new GraphQLObjectType({
         type: {
           type: new GraphQLEnumType({
             //enumtype allows to specify a set of options. Takes 2 args: name & values
-            name: "ArtistType",
+            name: "AddArtistType",
             values: {
               solo: { value: "solo artist" }, //in query, you write the key
               band: { value: "band" },
@@ -192,6 +192,38 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const artist = await Artist.create(args);
+        console.log(artist);
+        return artist;
+      },
+    },
+    updateArtist: {
+      type: ArtistType,
+      args: {
+        id: { type: GraphQLID },
+        name: { type: GraphQLNonNull(GraphQLString) },
+        bio: { type: GraphQLString },
+        type: {
+          type: new GraphQLEnumType({
+            //enumtype allows to specify a set of options. Takes 2 args: name & values
+            name: "UpdateArtistType",
+            values: {
+              solo: { value: "solo artist" }, //in query, you write the key
+              band: { value: "band" },
+              dj: { value: "DJ" }
+            },
+          }),
+        },
+        genreIds: { type: new GraphQLList(GraphQLString) },
+      },
+      async resolve(parent, args) {
+        const request = {
+          name: args.name,
+          bio: args.bio,
+          type: args.type,
+        };
+        const artist = await Artist.findByIdAndUpdate(args.id, request, {
+          new: true,
+        });
         console.log(artist);
         return artist;
       },

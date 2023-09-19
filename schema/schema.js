@@ -97,7 +97,7 @@ const RootQuery = new GraphQLObjectType({
     genres: {
       type: new GraphQLList(GenreType),
       resolve(parent, args) {
-        return Genre.find();
+        return Genre.find().sort({name: 'asc'});
       },
     },
   },
@@ -161,15 +161,28 @@ const Mutation = new GraphQLObjectType({
       },
     },
     addGenres: {
-      type: new GraphQLList(GenreType), //add several
+      type: new GraphQLList(GenreType), //add several in an array
       args: {
-        names: {
+        names:  {
           type: new GraphQLList(GraphQLNonNull(GraphQLString)),
         },
       },
-      async resolve(parent, { names }) {
+      async resolve(parent, { names } ) {
         //NOTE POSITION OF ASYNC; Destructure names
         return await Promise.all(names.map((name) => Genre.create({ name }))); //NOTE: curly braces
+      },
+    },
+    addGenre: {
+      type:GenreType, 
+      args: {
+        name: {
+          type: GraphQLNonNull(GraphQLString),
+        },
+      },
+      async resolve(parent, args) {
+        const genre = await Genre.create(args);
+        console.log(genre);
+        return genre;
       },
     },
     addArtist: {

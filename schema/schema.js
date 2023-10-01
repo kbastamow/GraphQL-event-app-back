@@ -23,7 +23,7 @@ const EventType = new GraphQLObjectType({
     description: { type: GraphQLString },
     date: { type: GraphQLString },
     price: { type: GraphQLInt },
-    image: { type: GraphQLString},
+    image: { type: GraphQLString },
     artists: {
       //Add relationship
       type: new GraphQLList(ArtistType),
@@ -44,11 +44,9 @@ const ArtistType = new GraphQLObjectType({
     bio: { type: GraphQLString },
     type: { type: GraphQLString }, //ENUM
     genres: {
-      //Add relationship
       type: new GraphQLList(GenreType),
       resolve(parent, args) {
-        //parent is this object
-        return Promise.all(parent.genreIds.map((id) => Genre.findById(id))); //CHECK
+        return Promise.all(parent.genreIds.map((id) => Genre.findById(id)));
       },
     },
   }),
@@ -71,7 +69,7 @@ const RootQuery = new GraphQLObjectType({
     events: {
       type: new GraphQLList(EventType),
       resolve(parent, args) {
-        return Event.find().sort({date: 'asc'});
+        return Event.find().sort({ date: 'asc' });
       },
     },
     event: {
@@ -84,7 +82,7 @@ const RootQuery = new GraphQLObjectType({
     artists: {
       type: new GraphQLList(ArtistType),
       resolve(parent, args) {
-        return Artist.find().sort({name: 'asc'})
+        return Artist.find().sort({ name: 'asc' })
       }
     },
     artist: {
@@ -97,7 +95,7 @@ const RootQuery = new GraphQLObjectType({
     genres: {
       type: new GraphQLList(GenreType),
       resolve(parent, args) {
-        return Genre.find().sort({name: 'asc'});
+        return Genre.find().sort({ name: 'asc' });
       },
     },
   },
@@ -163,17 +161,17 @@ const Mutation = new GraphQLObjectType({
     addGenres: {
       type: new GraphQLList(GenreType), //add several in an array
       args: {
-        names:  {
+        names: {
           type: new GraphQLList(GraphQLNonNull(GraphQLString)),
         },
       },
-      async resolve(parent, { names } ) {
+      async resolve(parent, { names }) {
         //NOTE POSITION OF ASYNC; Destructure names
         return await Promise.all(names.map((name) => Genre.create({ name }))); //NOTE: curly braces
       },
     },
     addGenre: {
-      type:GenreType, 
+      type: GenreType,
       args: {
         name: {
           type: GraphQLNonNull(GraphQLString),
@@ -217,10 +215,9 @@ const Mutation = new GraphQLObjectType({
         bio: { type: GraphQLString },
         type: {
           type: new GraphQLEnumType({
-            //enumtype allows to specify a set of options. Takes 2 args: name & values
             name: "UpdateArtistType",
             values: {
-              solo: { value: "solo artist" }, //in query, you write the key
+              solo: { value: "solo artist" },
               band: { value: "band" },
               dj: { value: "DJ" }
             },

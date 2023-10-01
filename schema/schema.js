@@ -1,4 +1,4 @@
-const { events } = require("../testData");
+// const { events } = require("../testData");
 const Event = require("../models/Event");
 const Artist = require("../models/Artist");
 const Genre = require("../models/Genre");
@@ -116,7 +116,6 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const event = await Event.create(args);
-        console.log(event);
         return event;
       },
     },
@@ -143,7 +142,6 @@ const Mutation = new GraphQLObjectType({
         const event = await Event.findByIdAndUpdate(args.id, request, {
           new: true,
         });
-        console.log(event);
         return event;
       },
     },
@@ -154,7 +152,6 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const event = await Event.findByIdAndDelete(args.id, { new: true });
-        console.log(event);
         return event;
       },
     },
@@ -179,7 +176,6 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const genre = await Genre.create(args);
-        console.log(genre);
         return genre;
       },
     },
@@ -203,7 +199,6 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const artist = await Artist.create(args);
-        console.log(artist);
         return artist;
       },
     },
@@ -234,7 +229,6 @@ const Mutation = new GraphQLObjectType({
         const artist = await Artist.findByIdAndUpdate(args.id, request, {
           new: true,
         });
-        console.log(artist);
         return artist;
       },
     },
@@ -245,3 +239,4 @@ module.exports = new GraphQLSchema({
   query: RootQuery,
   mutation: Mutation,
 });
+

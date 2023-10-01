@@ -10,7 +10,7 @@ The api connects to a MongoDB database and provides CRUD methods for concerts, a
 
 The frontend for the app can be found here:  
 
-🔗[Graphql-event-app-backend](https://github.com/kbastamow/GraphQL-event-app-front)
+🔗[Graphql Event App Frontend](https://github.com/kbastamow/GraphQL-event-app-front)
 
 ## ⚒️ Tech
 
